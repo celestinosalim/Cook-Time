@@ -15,7 +15,7 @@ class Home extends Component {
         </div>
         <div id="Section2">
           <h1 className="description">
-            Fresh delicious meals Delivered daily.
+            Fresh delicious meals delivered daily.
           </h1>
           <br />
           <h1 className="text_context">How It Works</h1>
