@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Route } from "react-router-dom";
+import { Route, withRouter } from "react-router-dom";
 import NavBar from "./components/navbar/NavBar";
 import Home from "./containers/Home";
 import MenuContainer from "./containers/MenuContainer";
@@ -22,32 +22,26 @@ class App extends Component {
 
   submitAdminForm = async (e, obj) => {
     e.preventDefault();
-
     const filtered = this.state.menuArr.find(menu => menu.day === obj.day);
-    console.log(obj);
-
     let options = {
-      method: "PATCH",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
         menu: {
-          dishes_attributes: {
-            id: 10,
-            name: obj.dishes[0].name,
-            description: obj.dishes[0].description
-          }
+          dishes_attributes: obj.dishes
         }
       })
     };
-
     const data = await fetch(
       `http://localhost:3001/api/menus/${filtered.id}`,
       options
     );
+
     const patching = await data.json();
-    console.log(patching);
+    window.location.reload();
+    this.props.history.push("/menu");
   };
 
   componentDidMount() {
@@ -98,4 +92,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withRouter(App);
