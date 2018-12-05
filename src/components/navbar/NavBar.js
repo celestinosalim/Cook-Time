@@ -6,7 +6,8 @@ class NavBar extends Component {
       backgroundColor: "rgb(121, 165, 64)",
       position: "fixed",
       top: 0,
-      width: "100%"
+      width: "100%",
+      zIndex: "500"
     };
 
     return (
@@ -44,18 +45,23 @@ class NavBar extends Component {
             <li className="nav-item ">
               {localStorage.getItem("jwt") ? null : (
                 <a className="nav-link" href="/login">
-                  LogIn
+                  Log in
                 </a>
               )}
             </li>
-            <li className="nav-item ">
-              {localStorage.getItem("jwt") ? (
-                <a className="nav-link" href="/logout">
-                  LogOut
-                </a>
-              ) : null}
-            </li>
           </ul>
+          {this.props.user && (
+            <a href="/profile">
+              <button className="btn btn-info">
+                Logged in as: {this.props.user.username}
+              </button>
+            </a>
+          )}
+          {localStorage.getItem("jwt") ? (
+            <a href="/logout">
+              <button className="btn btn-danger">Log Out</button>
+            </a>
+          ) : null}
 
           <i className="big facebook icon" />
           <i className="big instagram icon" />

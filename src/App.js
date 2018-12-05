@@ -7,27 +7,82 @@ import Footer from "./components/footer/Footer";
 import Form from "./components/form/Form";
 import Login from "./components/login/Login";
 import Logout from "./components/logout/Logout";
+import Profile from "./components/profile/Profile";
 import _ from "lodash";
 import "./css/App.css";
 
 class App extends Component {
   state = {
     menuArr: [],
-    user: null
+    user: null,
+    token: null
   };
 
-  getMenuArr = async () => {
+  getToken = async (e, obj) => {
+    e.preventDefault();
+    await this.login(obj);
+    await this.props.history.push("/profile");
+  };
+
+  login = obj => {
+    fetch(`http://localhost:3001/api/user_token`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify({
+        auth: {
+          email: obj.auth.email,
+          password: obj.auth.password
+        }
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        localStorage.setItem("jwt", data.jwt);
+        this.setState({
+          token: data.jwt
+        });
+      });
+  };
+
+  getUserData = () => {
+    // console.log(token);
     let token = "Bearer " + localStorage.getItem("jwt");
-    const data = await fetch(`http://localhost:3001/api/menus`, {
+    fetch("http://localhost:3001/api/users/current", {
       method: "GET",
       headers: {
         Authorization: token
       }
-    });
-    const menuArr = await data.json();
-    this.setState({
-      menuArr
-    });
+    })
+      .then(res => res.json())
+      .then(user => this.setState({ user }));
+  };
+
+  componentDidMount() {
+    if (localStorage.getItem("jwt")) {
+      this.getUserData();
+      this.getMenuArr();
+    } else {
+      this.props.history.push("/login");
+    }
+  }
+
+  getMenuArr = () => {
+    let token = "Bearer " + localStorage.getItem("jwt");
+    fetch(`http://localhost:3001/api/menus`, {
+      method: "GET",
+      headers: {
+        Authorization: token
+      }
+    })
+      .then(res => res.json())
+      .then(menuArr =>
+        this.setState({
+          menuArr: menuArr
+        })
+      );
   };
 
   submitAdminForm = async (e, obj) => {
@@ -54,68 +109,28 @@ class App extends Component {
     this.props.history.push("/menu");
   };
 
-  getToken = (e, obj) => {
+  handleOrderNow = async e => {
+    // window.location.reload();
     e.preventDefault();
-    this.login(obj);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    await setTimeout(() => this.props.history.push("/menu"), 1500);
+  };
+
+  handleProfileClick = () => {
     this.props.history.push("/");
   };
 
-  login = obj => {
-    fetch(`http://localhost:3001/api/user_token`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      },
-      body: JSON.stringify({
-        auth: {
-          email: obj.auth.email,
-          password: obj.auth.password
-        }
-      })
-    })
-      .then(res => res.json())
-      .then(data => {
-        localStorage.setItem("jwt", data.jwt);
-        this.setState({
-          token: data.jwt
-        });
-      });
-  };
-
-  getData = () => {
-    // console.log(token);
-    let token = "Bearer " + localStorage.getItem("jwt");
-    fetch("http://localhost:3001/api/users/current", {
-      method: "GET",
-      headers: {
-        Authorization: token
-      }
-    })
-      .then(res => res.json())
-      .then(user => this.setState({ user }));
-  };
-
-  componentDidMount() {
-    if (localStorage.getItem("jwt")) {
-      this.getData();
-      this.getMenuArr();
-    } else {
-      this.props.history.push("/login");
+  componentDidUpdate() {
+    if (this.state.token) {
+      window.location.reload();
     }
   }
-
-  handleOrderNow = e => {
-    // window.location.reload();
-    window.scrollTo({ top: 0 });
-    _.debounce(this.props.history.push("/menu"), 800);
-  };
 
   render() {
     console.log(this.state);
     return (
       <div>
-        <NavBar />
+        <NavBar user={this.state.user} />
         <div>
           <div>
             <div>
@@ -146,6 +161,16 @@ class App extends Component {
                   render={() => <Login getToken={this.getToken} />}
                 />
                 <Route exact path="/logout" render={() => <Logout />} />
+                <Route
+                  exact
+                  path="/profile"
+                  render={() => (
+                    <Profile
+                      user={this.state.user}
+                      handleProfileClick={this.handleProfileClick}
+                    />
+                  )}
+                />
               </div>
             </div>
           </div>
