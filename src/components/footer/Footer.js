@@ -25,7 +25,7 @@ class Footer extends Component {
         </div>
         <br />
         <div>
-          <i className="sm trademark icon" /> 2018 CookTime by: Celestino Salim
+          <h3>© 2018 CookTime by: Celestino Salim</h3>
         </div>
       </StickyFooter>
     );

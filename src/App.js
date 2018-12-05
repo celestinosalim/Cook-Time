@@ -3,17 +3,27 @@ import { Route, withRouter } from "react-router-dom";
 import NavBar from "./components/navbar/NavBar";
 import Home from "./containers/Home";
 import MenuContainer from "./containers/MenuContainer";
-import Footer from "./footer/Footer";
+import Footer from "./components/footer/Footer";
 import Form from "./components/form/Form";
+import Login from "./components/login/Login";
+import Logout from "./components/logout/Logout";
+import _ from "lodash";
 import "./css/App.css";
 
 class App extends Component {
   state = {
-    menuArr: []
+    menuArr: [],
+    user: null
   };
 
   getMenuArr = async () => {
-    const data = await fetch(`http://localhost:3001/api/menus`);
+    let token = "Bearer " + localStorage.getItem("jwt");
+    const data = await fetch(`http://localhost:3001/api/menus`, {
+      method: "GET",
+      headers: {
+        Authorization: token
+      }
+    });
     const menuArr = await data.json();
     this.setState({
       menuArr
@@ -22,11 +32,13 @@ class App extends Component {
 
   submitAdminForm = async (e, obj) => {
     e.preventDefault();
+    let token = "Bearer " + localStorage.getItem("jwt");
     const filtered = this.state.menuArr.find(menu => menu.day === obj.day);
     let options = {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        Authorization: token
       },
       body: JSON.stringify({
         menu: {
@@ -34,27 +46,73 @@ class App extends Component {
         }
       })
     };
-    const data = await fetch(
-      `http://localhost:3001/api/menus/${filtered.id}`,
-      options
+    fetch(`http://localhost:3001/api/menus/${filtered.id}`, options).then(r =>
+      r.json()
     );
 
-    const patching = await data.json();
     window.location.reload();
     this.props.history.push("/menu");
   };
 
+  getToken = (e, obj) => {
+    fetch(`http://localhost:3001/api/user_token`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify({
+        auth: {
+          email: obj.auth.email,
+          password: obj.auth.password
+        }
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        localStorage.setItem("jwt", data.jwt);
+        this.setState({
+          token: data.jwt
+        });
+      })
+      .then(this.props.history.push("/"));
+  };
+
+  getData = () => {
+    let token = "Bearer " + localStorage.getItem("jwt");
+    console.log(token);
+    fetch("http://localhost:3001/auth", {
+      method: "GET",
+      headers: {
+        Authorization: token
+      }
+    })
+      .then(resp => resp.json())
+      .then(user =>
+        this.setState({
+          user
+        })
+      );
+  };
+
   componentDidMount() {
-    this.getMenuArr();
+    if (localStorage.getItem("jwt")) {
+      this.getMenuArr();
+    } else {
+      this.props.history.push("/login");
+
+      this.getData();
+    }
   }
 
   handleOrderNow = e => {
-    console.log("this is to order now");
+    window.location.reload();
+    window.scrollTo({ top: 0 });
+    _.debounce(this.props.history.push("/menu"), 800);
   };
 
   render() {
     console.log(this.state);
-
     return (
       <div>
         <NavBar />
@@ -82,6 +140,12 @@ class App extends Component {
                   path="/update-menu"
                   render={() => <Form submitAdminForm={this.submitAdminForm} />}
                 />
+                <Route
+                  exact
+                  path="/login"
+                  render={() => <Login getToken={this.getToken} />}
+                />
+                <Route exact path="/logout" render={() => <Logout />} />
               </div>
             </div>
           </div>

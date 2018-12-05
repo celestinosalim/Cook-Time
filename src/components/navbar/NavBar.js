@@ -41,7 +41,22 @@ class NavBar extends Component {
                 About
               </a>
             </li>
+            <li className="nav-item ">
+              {localStorage.getItem("jwt") ? null : (
+                <a className="nav-link" href="/login">
+                  LogIn
+                </a>
+              )}
+            </li>
+            <li className="nav-item ">
+              {localStorage.getItem("jwt") ? (
+                <a className="nav-link" href="/logout">
+                  LogOut
+                </a>
+              ) : null}
+            </li>
           </ul>
+
           <i className="big facebook icon" />
           <i className="big instagram icon" />
           <i className="big twitter icon" />
