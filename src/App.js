@@ -55,6 +55,12 @@ class App extends Component {
   };
 
   getToken = (e, obj) => {
+    e.preventDefault();
+    this.login(obj);
+    this.props.history.push("/");
+  };
+
+  login = obj => {
     fetch(`http://localhost:3001/api/user_token`, {
       method: "POST",
       headers: {
@@ -74,39 +80,33 @@ class App extends Component {
         this.setState({
           token: data.jwt
         });
-      })
-      .then(this.props.history.push("/"));
+      });
   };
 
   getData = () => {
+    // console.log(token);
     let token = "Bearer " + localStorage.getItem("jwt");
-    console.log(token);
-    fetch("http://localhost:3001/auth", {
+    fetch("http://localhost:3001/api/users/current", {
       method: "GET",
       headers: {
         Authorization: token
       }
     })
-      .then(resp => resp.json())
-      .then(user =>
-        this.setState({
-          user
-        })
-      );
+      .then(res => res.json())
+      .then(user => this.setState({ user }));
   };
 
   componentDidMount() {
     if (localStorage.getItem("jwt")) {
+      this.getData();
       this.getMenuArr();
     } else {
       this.props.history.push("/login");
-
-      this.getData();
     }
   }
 
   handleOrderNow = e => {
-    window.location.reload();
+    // window.location.reload();
     window.scrollTo({ top: 0 });
     _.debounce(this.props.history.push("/menu"), 800);
   };
