@@ -8,12 +8,12 @@ class Footer extends Component {
       <StickyFooter
         bottomThreshold={50}
         normalStyles={{
-          backgroundColor: "rgb(121, 165, 64)",
+          backgroundColor: "rgb(212, 240, 160)",
           padding: "5rem",
           textAlign: "center"
         }}
         stickyStyles={{
-          backgroundColor: "rgba(121, 165, 64)",
+          backgroundColor: "rgba(212, 240, 160)",
           padding: "2rem",
           textAlign: "center"
         }}

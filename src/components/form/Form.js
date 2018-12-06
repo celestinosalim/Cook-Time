@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./css/display.css";
+import "./css/form.css";
 
 class Form extends Component {
   state = {
@@ -26,10 +26,11 @@ class Form extends Component {
 
     return dishes.map((dishes, idx) => {
       return (
-        <div key={idx}>
+        <div key={idx} id="card">
           <label>
             Name:
             <input
+              className="form-item"
               type="text"
               value={dishes.name}
               name="name"
@@ -39,6 +40,7 @@ class Form extends Component {
           <label>
             Description:
             <input
+              className="form-item"
               type="text"
               value={dishes.description}
               name="description"
@@ -48,6 +50,7 @@ class Form extends Component {
           <label>
             Image:
             <input
+              className="form-item"
               type="text"
               value={dishes.image}
               name="image"
@@ -81,40 +84,46 @@ class Form extends Component {
 
     return (
       <div id="Section1">
-        <form onSubmit={e => this.props.submitAdminForm(e, this.state)}>
-          <label>
-            Day:
-            <select
-              onChange={this.handleSelectChange}
-              name="day"
-              defaultValue={this.state.day}
-            >
-              <option>Monday</option>
-              <option>Tuesday</option>
-              <option>Wednesday</option>
-              <option>Thursday</option>
-              <option>Friday</option>
-            </select>
-          </label>
-          <label>
-            Day Image:
-            <input
-              type="text"
-              value={this.state.image}
-              name="image"
-              onChange={this.handleSelectChange}
-            />
-          </label>
-          ;
-          <button
-            className="btn btn-success"
-            onClick={e => this.handleClick(e)}
-          >
-            Add New Dish
-          </button>
-          {this.dishesToAdd()}
-          <input type="Submit" name="Submit" />
-        </form>
+        <div className="center">
+          <div className="card">
+            <form onSubmit={e => this.props.submitAdminForm(e, this.state)}>
+              <label>
+                Day:
+                <select
+                  onChange={this.handleSelectChange}
+                  name="day"
+                  defaultValue={this.state.day}
+                  className="form-item"
+                >
+                  <option>Monday</option>
+                  <option>Tuesday</option>
+                  <option>Wednesday</option>
+                  <option>Thursday</option>
+                  <option>Friday</option>
+                </select>
+              </label>
+              <label>
+                Day Image:
+                <input
+                  type="text"
+                  value={this.state.image}
+                  name="image"
+                  onChange={this.handleSelectChange}
+                  className="form-item"
+                />
+              </label>
+              ;
+              <button
+                className="btn btn-success"
+                onClick={e => this.handleClick(e)}
+              >
+                Add New Dish
+              </button>
+              {this.dishesToAdd()}
+              <input type="Submit" name="Submit" className="form-submit" />
+            </form>
+          </div>
+        </div>
       </div>
     );
   }

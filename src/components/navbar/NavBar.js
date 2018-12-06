@@ -1,13 +1,20 @@
 import React, { Component } from "react";
+import logo from "../../images/logo.png";
+import "./NavBar.css";
 
 class NavBar extends Component {
   render() {
     const navStyle = {
-      backgroundColor: "rgb(121, 165, 64)",
+      backgroundColor: "rgb(212, 240, 160)",
       position: "fixed",
       top: 0,
       width: "100%",
       zIndex: "500"
+    };
+
+    const logoStyle = {
+      width: "40px",
+      height: "40px"
     };
 
     return (
@@ -16,7 +23,7 @@ class NavBar extends Component {
         style={navStyle}
       >
         <a className="navbar-brand" href="/">
-          Home
+          <img src={logo} alt="" style={logoStyle} />
         </a>
         <button
           className="navbar-toggler"
@@ -37,29 +44,27 @@ class NavBar extends Component {
                 Menu
               </a>
             </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/contact">
-                About
+
+            {this.props.user && this.props.user.role === "admin" && (
+              <a className="nav-link" href="/update-menu">
+                Update Menu
               </a>
-            </li>
-            <li className="nav-item ">
-              {localStorage.getItem("jwt") ? null : (
-                <a className="nav-link" href="/login">
-                  Log in
-                </a>
-              )}
-            </li>
+            )}
+            <a className="nav-link" href="/contact">
+              Contact Us
+            </a>
           </ul>
+
           {this.props.user && (
             <a href="/profile">
-              <button className="btn btn-info">
-                Logged in as: {this.props.user.username}
+              <button className="btn btn-primary">
+                Profile: {this.props.user.username}
               </button>
             </a>
           )}
           {localStorage.getItem("jwt") ? (
             <a href="/logout">
-              <button className="btn btn-danger">Log Out</button>
+              <button className="btn btn-secondary">Log Out</button>
             </a>
           ) : null}
 

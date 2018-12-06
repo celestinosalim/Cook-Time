@@ -8,7 +8,8 @@ import Form from "./components/form/Form";
 import Login from "./components/login/Login";
 import Logout from "./components/logout/Logout";
 import Profile from "./components/profile/Profile";
-import _ from "lodash";
+import AboutForm from "./components/about/AboutForm";
+import swal from "sweetalert";
 import "./css/App.css";
 
 class App extends Component {
@@ -21,6 +22,28 @@ class App extends Component {
   getToken = async (e, obj) => {
     e.preventDefault();
     await this.login(obj);
+    await this.props.history.push("/profile");
+  };
+
+  register = async (e, obj) => {
+    e.preventDefault();
+
+    fetch(`http://localhost:3001/api/users/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify({
+        user: {
+          email: obj.auth.register_email,
+          password: obj.auth.register_password,
+          username: obj.auth.username,
+          avatar: obj.auth.avatar
+        }
+      })
+    }).then(() => this.loginAfterSignUp(obj));
+
     await this.props.history.push("/profile");
   };
 
@@ -44,6 +67,35 @@ class App extends Component {
         this.setState({
           token: data.jwt
         });
+      })
+      .catch(error => {
+        swal("INVALID USER");
+        return this.props.history.push("/login");
+      });
+  };
+
+  loginAfterSignUp = obj => {
+    fetch(`http://localhost:3001/api/user_token`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify({
+        auth: {
+          email: obj.auth.register_email,
+          password: obj.auth.register_password
+        }
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        localStorage.setItem("jwt", data.jwt);
+        if (this.state.token === null) {
+          this.setState({
+            token: data.jwt
+          });
+        }
       });
   };
 
@@ -60,15 +112,6 @@ class App extends Component {
       .then(user => this.setState({ user }));
   };
 
-  componentDidMount() {
-    if (localStorage.getItem("jwt")) {
-      this.getUserData();
-      this.getMenuArr();
-    } else {
-      this.props.history.push("/login");
-    }
-  }
-
   getMenuArr = () => {
     let token = "Bearer " + localStorage.getItem("jwt");
     fetch(`http://localhost:3001/api/menus`, {
@@ -84,6 +127,15 @@ class App extends Component {
         })
       );
   };
+
+  componentDidMount() {
+    if (localStorage.getItem("jwt")) {
+      this.getUserData();
+      this.getMenuArr();
+    } else {
+      this.props.history.push("/login");
+    }
+  }
 
   submitAdminForm = async (e, obj) => {
     e.preventDefault();
@@ -113,7 +165,9 @@ class App extends Component {
     // window.location.reload();
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: "smooth" });
-    await setTimeout(() => this.props.history.push("/menu"), 1500);
+    if (this.state.user) {
+      await setTimeout(() => this.props.history.push("/menu"), 1500);
+    }
   };
 
   handleProfileClick = () => {
@@ -125,6 +179,10 @@ class App extends Component {
       window.location.reload();
     }
   }
+
+  backToHomePage = async () => {
+    await setTimeout(() => this.props.history.push("/"), 10000);
+  };
 
   render() {
     console.log(this.state);
@@ -158,7 +216,9 @@ class App extends Component {
                 <Route
                   exact
                   path="/login"
-                  render={() => <Login getToken={this.getToken} />}
+                  render={() => (
+                    <Login getToken={this.getToken} register={this.register} />
+                  )}
                 />
                 <Route exact path="/logout" render={() => <Logout />} />
                 <Route
@@ -168,9 +228,12 @@ class App extends Component {
                     <Profile
                       user={this.state.user}
                       handleProfileClick={this.handleProfileClick}
+                      backToHomePage={this.backToHomePage}
                     />
                   )}
                 />
+
+                <Route exact path="/contact" render={() => <AboutForm />} />
               </div>
             </div>
           </div>

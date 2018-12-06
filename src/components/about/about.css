@@ -1,6 +1,8 @@
-#Section1 {
+.aboutForm {
   padding-top: 10rem;
-  text-align: center;
   background-color: rgb(255, 255, 255);
   padding-bottom: 10rem;
+  padding-left: 10rem;
+  padding-right: 10rem;
+  align-content: auto;
 }
