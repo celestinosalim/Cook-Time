@@ -28,7 +28,7 @@ class App extends Component {
   register = async (e, obj) => {
     e.preventDefault();
 
-    fetch(`http://localhost:3001/api/users/create`, {
+    fetch(`https://cook-time-api.herokuapp.com/api/users/create`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -48,7 +48,7 @@ class App extends Component {
   };
 
   login = obj => {
-    fetch(`http://localhost:3001/api/user_token`, {
+    fetch(`https://cook-time-api.herokuapp.com/api/user_token`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -75,7 +75,7 @@ class App extends Component {
   };
 
   loginAfterSignUp = obj => {
-    fetch(`http://localhost:3001/api/user_token`, {
+    fetch(`https://cook-time-api.herokuapp.com/api/user_token`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -107,7 +107,7 @@ class App extends Component {
   getUserData = () => {
     // console.log(token);
     let token = "Bearer " + localStorage.getItem("jwt");
-    fetch("http://localhost:3001/api/users/current", {
+    fetch("https://cook-time-api.herokuapp.com/api/users/current", {
       method: "GET",
       headers: {
         Authorization: token
@@ -119,7 +119,7 @@ class App extends Component {
 
   getMenuArr = () => {
     let token = "Bearer " + localStorage.getItem("jwt");
-    fetch(`http://localhost:3001/api/menus`, {
+    fetch(`https://cook-time-api.herokuapp.com/api/menus`, {
       method: "GET",
       headers: {
         Authorization: token
@@ -158,9 +158,10 @@ class App extends Component {
         }
       })
     };
-    fetch(`http://localhost:3001/api/menus/${filtered.id}`, options).then(r =>
-      r.json()
-    );
+    fetch(
+      `https://cook-time-api.herokuapp.com/api/menus/${filtered.id}`,
+      options
+    ).then(r => r.json());
 
     window.location.reload();
     this.props.history.push("/menu");
