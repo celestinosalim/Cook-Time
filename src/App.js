@@ -81,6 +81,7 @@ class App extends Component {
         "Content-Type": "application/json",
         Accept: "application/json"
       },
+
       body: JSON.stringify({
         auth: {
           email: obj.auth.register_email,
@@ -96,6 +97,10 @@ class App extends Component {
             token: data.jwt
           });
         }
+      })
+      .catch(error => {
+        swal("INVALID USER");
+        return this.props.history.push("/login");
       });
   };
 

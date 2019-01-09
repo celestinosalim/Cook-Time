@@ -50,9 +50,9 @@ class NavBar extends Component {
                 Update Menu
               </a>
             )}
-            <a className="nav-link" href="/contact">
+            {/* <a className="nav-link" href="/contact">
               Contact Us
-            </a>
+            </a> */}
           </ul>
 
           {this.props.user && (
@@ -68,9 +68,6 @@ class NavBar extends Component {
             </a>
           ) : null}
 
-          <i className="big facebook icon" />
-          <i className="big instagram icon" />
-          <i className="big twitter icon" />
           <i
             className="big shopping cart icon"
             onClick={() => console.log("clicked")}

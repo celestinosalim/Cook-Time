@@ -3,6 +3,7 @@ import StickyFooter from "react-sticky-footer";
 
 class Footer extends Component {
   state = {};
+
   render() {
     return (
       <StickyFooter
@@ -19,9 +20,15 @@ class Footer extends Component {
         }}
       >
         <div>
-          <i className="big facebook icon" />
-          <i className="big instagram icon" />
-          <i className="big twitter icon" />
+          <a href="https://www.facebook.com/celestino.salim">
+            <i className=" black circular big facebook icon iconColors" />
+          </a>
+          <a href="https://www.instagram.com/cooktimeinc/">
+            <i className="black circular big instagram icon" />
+          </a>
+          <a href="https://github.com/celestinosalim">
+            <i className="black circular big github icon" />
+          </a>
         </div>
         <br />
         <div>
