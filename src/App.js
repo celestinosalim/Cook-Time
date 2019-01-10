@@ -52,7 +52,7 @@ class App extends Component {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json"
+        Accept: "*/*"
       },
       body: JSON.stringify({
         auth: {
