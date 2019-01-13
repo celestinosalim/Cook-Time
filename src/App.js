@@ -51,8 +51,7 @@ class App extends Component {
     fetch(`https://cook-time-api.herokuapp.com/api/user_token`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        Accept: "*/*"
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
         auth: {
