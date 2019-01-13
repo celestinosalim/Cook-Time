@@ -51,7 +51,8 @@ class App extends Component {
     fetch(`https://cook-time-api.herokuapp.com/api/user_token`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        Accept: "application/json"
       },
       body: JSON.stringify({
         auth: {
@@ -118,7 +119,7 @@ class App extends Component {
 
   getMenuArr = () => {
     let token = "Bearer " + localStorage.getItem("jwt");
-    fetch(`https://cook-time-api.herokuapp.com/api/menus`, {
+    fetch(`https://cook-time-api.herokuapp.com/api/api/menus`, {
       method: "GET",
       headers: {
         Authorization: token
