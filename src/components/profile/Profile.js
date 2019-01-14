@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { UserCard } from "react-ui-cards";
 import "./Profile.css";
-import { Card } from "semantic-ui-react";
 class Profile extends Component {
   state = {};
 

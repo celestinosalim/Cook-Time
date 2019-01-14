@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { Route, withRouter } from "react-router-dom";
 import NavBar from "./components/navbar/NavBar";
 import Home from "./containers/Home";
@@ -77,15 +77,12 @@ class App extends Component {
   };
 
   loginAfterSignUp = obj => {
-    console.log(obj);
-
-    fetch(`https://cook-time-api.herokuapp.com/api/user_token`, {
+    fetch(`http://localhost:3001/api/user_token`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json"
       },
-
       body: JSON.stringify({
         auth: {
           email: obj.auth.register_email,
@@ -93,7 +90,6 @@ class App extends Component {
         }
       })
     })
-      .then(data => console.log(data))
       .then(res => res.json())
       .then(data => {
         localStorage.setItem("jwt", data.jwt);
@@ -104,7 +100,7 @@ class App extends Component {
         }
       })
       .catch(error => {
-        swal("INVALID USER");
+        swal("INVALID USER PLEASE TRY AGAIN");
         return this.props.history.push("/login");
       });
   };
@@ -196,7 +192,6 @@ class App extends Component {
   };
 
   render() {
-    console.log(this.state);
     return (
       <div>
         <NavBar user={this.state.user} />
