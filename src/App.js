@@ -25,9 +25,9 @@ class App extends Component {
     await this.props.history.push("/profile");
   };
 
-  register = async (e, obj) => {
+  register = (e, obj) => {
     e.preventDefault();
-    console.log(obj);
+    // console.log(obj);
 
     fetch(`https://cook-time-api.herokuapp.com/api/users/create`, {
       method: "POST",
@@ -44,10 +44,9 @@ class App extends Component {
         }
       })
     })
-      .then(data => console.log(data))
-      .then(() => this.loginAfterSignUp(obj));
-
-    await this.props.history.push("/profile");
+      // .then(data => console.log(data))
+      .then(() => this.loginAfterSignUp(obj))
+      .then(this.props.history.push("/profile"));
   };
 
   login = obj => {
@@ -77,7 +76,7 @@ class App extends Component {
       });
   };
 
-  loginAfterSignUp = async obj => {
+  loginAfterSignUp = obj => {
     console.log(obj);
 
     fetch(`https://cook-time-api.herokuapp.com/api/user_token`, {
