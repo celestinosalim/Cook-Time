@@ -62,6 +62,7 @@ class App extends Component {
       })
     })
       .then(res => res.json())
+      .then(data => console.log(data))
       .then(data => {
         localStorage.setItem("jwt", data.jwt);
         this.setState({
