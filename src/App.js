@@ -77,7 +77,7 @@ class App extends Component {
   };
 
   loginAfterSignUp = obj => {
-    fetch(`http://localhost:3001/api/user_token`, {
+    fetch(`https://cook-time-api.herokuapp.com/api/user_token`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
