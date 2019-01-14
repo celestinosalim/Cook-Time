@@ -42,7 +42,7 @@ class App extends Component {
           avatar: obj.auth.avatar
         }
       })
-    }).then(() => this.loginAfterSignUp(obj));
+    }).then(this.loginAfterSignUp(obj));
 
     await this.props.history.push("/profile");
   };
@@ -75,6 +75,8 @@ class App extends Component {
   };
 
   loginAfterSignUp = obj => {
+    console.log(obj.auth);
+
     fetch(`http://localhost:3001/api/user_token`, {
       method: "POST",
       headers: {
@@ -96,6 +98,10 @@ class App extends Component {
             token: data.jwt
           });
         }
+      })
+      .catch(error => {
+        swal("INVALID USER PLEASE TRY AGAIN");
+        return this.props.history.push("/login");
       });
   };
 
