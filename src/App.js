@@ -74,7 +74,7 @@ class App extends Component {
       });
   };
 
-  loginAfterSignUp = obj => {
+  loginAfterSignUp = async obj => {
     fetch(`https://cook-time-api.herokuapp.com/api/user_token`, {
       method: "POST",
       headers: {
@@ -91,7 +91,7 @@ class App extends Component {
     })
       .then(res => res.json())
       .then(data => {
-        localStorage.setItem("jwt", data.jwt);
+        await localStorage.setItem("jwt", data.jwt);
         if (this.state.token === null) {
           this.setState({
             token: data.jwt
