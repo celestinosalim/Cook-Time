@@ -27,6 +27,7 @@ class App extends Component {
 
   register = async (e, obj) => {
     e.preventDefault();
+    console.log(obj);
 
     fetch(`https://cook-time-api.herokuapp.com/api/users/create`, {
       method: "POST",
@@ -42,7 +43,9 @@ class App extends Component {
           avatar: obj.auth.avatar
         }
       })
-    }).then(() => this.loginAfterSignUp(obj));
+    })
+      .then(data => console.log(data))
+      .then(() => this.loginAfterSignUp(obj));
 
     await this.props.history.push("/profile");
   };
@@ -62,7 +65,6 @@ class App extends Component {
       })
     })
       .then(res => res.json())
-      .then(data => console.log(data))
       .then(data => {
         localStorage.setItem("jwt", data.jwt);
         this.setState({
@@ -76,6 +78,8 @@ class App extends Component {
   };
 
   loginAfterSignUp = async obj => {
+    console.log(obj);
+
     fetch(`https://cook-time-api.herokuapp.com/api/user_token`, {
       method: "POST",
       headers: {
@@ -90,6 +94,7 @@ class App extends Component {
         }
       })
     })
+      .then(data => console.log(data))
       .then(res => res.json())
       .then(data => {
         localStorage.setItem("jwt", data.jwt);
