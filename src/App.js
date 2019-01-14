@@ -91,7 +91,7 @@ class App extends Component {
     })
       .then(res => res.json())
       .then(data => {
-        await localStorage.setItem("jwt", data.jwt);
+        localStorage.setItem("jwt", data.jwt);
         if (this.state.token === null) {
           this.setState({
             token: data.jwt
