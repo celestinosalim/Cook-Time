@@ -120,7 +120,7 @@ class App extends Component {
 
   getMenuArr = () => {
     let token = "Bearer " + localStorage.getItem("jwt");
-    fetch(`https://cook-time-api.herokuapp.com/api/api/menus`, {
+    fetch(`https://cook-time-api.herokuapp.com/api/menus`, {
       method: "GET",
       headers: {
         Authorization: token
