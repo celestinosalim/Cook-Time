@@ -22,6 +22,7 @@ This app is deployed on Heroku.
 
 - [React](https://reactjs.org) - Web Framework.
 - [CSS] - Used for styling.
+- [Bootstrap](https://getbootstrap.com/) - Used for styling.
 - [Knock](https://github.com/nsarno/knock) - Seamless JWT authentication for Rails API.
 
 ## Authors
