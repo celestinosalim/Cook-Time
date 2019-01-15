@@ -6,7 +6,7 @@ Retail site for on demand meal delivery, Created for a company located in Miami,
 
 production site: https://cook-time.herokuapp.com/.
 
-To get started fork & clone down the https://github.com/celestinosalim/Cook-Time-Api run bundle install then rails server -p 3001 to start the server.
+To get started fork & clone down https://github.com/celestinosalim/Cook-Time-Api run bundle install then rails server -p 3001 to start the server.
 Once you have the backend running you can fork this repo, clone it down and run npm install to install all the packages used in this project & npm start to start the client.
 
 ### Prerequisites
